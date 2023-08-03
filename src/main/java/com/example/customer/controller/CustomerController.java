@@ -24,12 +24,12 @@ public class CustomerController {
     }
 
     @GetMapping("/dec/{id}/{amount}")
-    public boolean decreaseBalance(@PathVariable Long id,@PathVariable double amount){
-        return customerService.decreaseBalance(id,amount);
+    public ResponseEntity<Boolean> decreaseBalance(@PathVariable Long id,@PathVariable double amount){
+        return ResponseEntity.ok(customerService.decreaseBalance(id,amount));
     }
     @GetMapping("/inc/{id}/{amount}")
-    public void increaseBalance(@PathVariable Long id,@PathVariable double amount){
-        customerService.increaseBalance(id,amount);
+    public ResponseEntity<Boolean> increaseBalance(@PathVariable Long id,@PathVariable double amount){
+      return ResponseEntity.ok(customerService.increaseBalance(id,amount))  ;
     }
 
 }

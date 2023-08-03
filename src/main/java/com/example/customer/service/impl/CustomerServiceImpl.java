@@ -51,9 +51,10 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void increaseBalance(Long id, double amount) {
+    public boolean increaseBalance(Long id, double amount) {
         Customer customer=repository.findById(id).orElseThrow(()->new NotFoundException("invalid customer"));
         customer.setBalance(customer.getBalance()+amount);
         repository.save(customer);
+        return true;
     }
 }

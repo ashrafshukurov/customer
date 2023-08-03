@@ -3,6 +3,7 @@ package com.example.customer.controller;
 import com.example.customer.CustomerApplication;
 import com.example.customer.dto.ErrorResponse;
 import com.example.customer.dto.response.CustomerResponse;
+import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +58,56 @@ class CustomerControllerTest {
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 
+    }
+    @Test
+    @Sql(scripts = "classpath:sql/customer.sql",executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    public void givenDecreaseBalanceWhenFoundThenReturnEntity(){
+        //arrange
+        Long id=2L;
+        double decrease_amount=200;
+        //act
+        ResponseEntity<Boolean> response=testRestTemplate.getForEntity(url+"/dec/"+id+"/"+decrease_amount,Boolean.class);
+        //assert
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+
+    }
+    @Test
+    public void givenDecreaseBalanceWhenNotFoundThenReturnException(){
+        //arrange
+        Long id=100L;
+        double decrease_amount=200;
+        //act
+       ResponseEntity<ErrorResponse> response= testRestTemplate.getForEntity(url+"/dec/"+id+"/"+decrease_amount,ErrorResponse.class);
+
+        //assert
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.NOT_FOUND,response.getStatusCode());
+
+    }
+    @Test
+    @Sql(scripts = "classpath:sql/customer.sql",executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    public void givenIncreaseBalanceWhenFoundThenReturnResult(){
+        //arrange
+        Long id=2L;
+        double increase_balance=200;
+        //act
+        ResponseEntity<Boolean> response=testRestTemplate.getForEntity(url+"/inc/"+id+"/"+increase_balance,Boolean.class);
+
+        //assert
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+
+    }
+    @Test
+    public void givenIncreaseBalanceWhenNotFoundThenReturnException(){
+        //arrange
+        Long id=100L;
+        double increase_balance=200;
+        //act
+        ResponseEntity<ErrorResponse> response=testRestTemplate.getForEntity(url+"/inc/"+id+"/"+increase_balance,ErrorResponse.class);
+        //assert
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.NOT_FOUND,response.getStatusCode());
     }
 }

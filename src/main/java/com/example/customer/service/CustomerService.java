@@ -12,5 +12,5 @@ public interface CustomerService {
     void createCustomer(CustomerRequest request);
     CustomerResponse getCustomerById(Long id);
     boolean decreaseBalance(Long id,double amount);
-    void increaseBalance(Long id,double amount);
+    boolean increaseBalance(Long id,double amount);
 }
